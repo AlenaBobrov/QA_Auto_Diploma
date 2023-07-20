@@ -10,6 +10,7 @@ import java.util.Random;
 
 public class DataHelper {
     private static Faker faker = new Faker(new Locale("en"));
+    private static Faker fakerRU = new Faker(new Locale("ru"));
     private DataHelper() {}
 
     @Value
@@ -18,22 +19,27 @@ public class DataHelper {
         private String cardStatus;
     }
     public static InfoCard getApprovedCard() {
+
         return new InfoCard("4444 4444 4444 4441", "APPROVED");
     }
 
     public static InfoCard getDeclinedCard() {
+
         return new InfoCard("4444 4444 4444 4442", "DECLINED");
     }
 
     public static InfoCard getInvalidCard(String number) {
+
         return new InfoCard(number, "");
     }
 
     public static InfoCard getEmptyCardNumber() {
+
         return new InfoCard("", "");
     }
 
     public static InfoCard getRandomCardNumber() {
+
         return new InfoCard(faker.business().creditCardNumber(), "");
     }
 
@@ -44,11 +50,11 @@ public class DataHelper {
 
 
     public static String getValidMonth() {
-
         return LocalDate.now().format(DateTimeFormatter.ofPattern("MM"));
     }
 
     public static String getInvalidMonth(String month) {
+
         return month;
     }
 
@@ -57,21 +63,43 @@ public class DataHelper {
         return LocalDate.now().plusYears(year).format(DateTimeFormatter.ofPattern("yy"));
     }
 
+    public static String getOverFiveYear() {
+        return LocalDate.now().plusYears(6).format(DateTimeFormatter.ofPattern("yy"));
+    }
 
-    public static String getInvalidYear() {
+    public static String getLastYear() {
         return LocalDate.now().minusYears(1).format(DateTimeFormatter.ofPattern("yy"));
     }
 
 
     public static String getValidName() {
-
         return faker.name().firstName() + " " + faker.name().lastName();
     }
-
-    public static String getInvalidNameNumbers() {
-        return faker.number().digits(5);
+    public static String getCyrillicName() {
+        return fakerRU.name().firstName() + " " + fakerRU.name().lastName();
     }
-    public static String getInvalidNameSymbols() {
+
+    public static String getFifteenNumbers() {
+
+        return faker.number().digits(15);
+    }
+    public static String getSeventeenNumbers() {
+
+        return faker.number().digits(17);
+    }
+    public static String getOneNumber() {
+
+        return faker.number().digits(1);
+    }
+    public static String getThreeNumber() {
+
+        return faker.number().digits(3);
+    }
+    public static String getFourNumber() {
+
+        return faker.number().digits(4);
+    }
+    public static String getSymbols() {
             String symbols = "!№%:?*";
             Random r = new Random();
             char c  = symbols.charAt(r.nextInt(symbols.length()));
@@ -85,6 +113,7 @@ public class DataHelper {
     }
 
     public static String getInvalidCVCCVV(String cvccvv) {
+
         return cvccvv;
     }
 }
