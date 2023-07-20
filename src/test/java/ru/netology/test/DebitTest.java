@@ -156,6 +156,13 @@ public class DebitTest {
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, validMonth, emptyYear, validOwner, validcvccvv);
     }
+    @Test  //Поле "Владелец" заполнено только фамилией
+    void surnameName() {
+        String surnameOwner = DataHelper.getSurname();
+        var paymentgate = new PaymentGate();
+        paymentgate.cleanPayField();
+        paymentgate.fillingPayForm(validCardNumber, validMonth, validYear, surnameOwner, validcvccvv);
+    }
     @Test  //Поле "Владелец" заполнено кириллицей
     void сyrillicName() {
         String сyrillicOwner = DataHelper.getCyrillicName();

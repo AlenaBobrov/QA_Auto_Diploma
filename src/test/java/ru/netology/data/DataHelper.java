@@ -73,10 +73,14 @@ public class DataHelper {
 
 
     public static String getValidName() {
-        return faker.name().firstName() + " " + faker.name().lastName();
+        return faker.name().fullName();
+    }
+
+    public static String getSurname() {
+        return faker.name().lastName();
     }
     public static String getCyrillicName() {
-        return fakerRU.name().firstName() + " " + fakerRU.name().lastName();
+        return fakerRU.name().fullName();
     }
 
     public static String getFifteenNumbers() {
@@ -112,8 +116,4 @@ public class DataHelper {
         return faker.number().digits(3);
     }
 
-    public static String getInvalidCVCCVV(String cvccvv) {
-
-        return cvccvv;
-    }
 }

@@ -155,6 +155,13 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, validMonth, emptyYear, validOwner, validcvccvv);
     }
+    @Test  //Поле "Владелец" заполнено только фамилией
+    void surnameName() {
+        String surnameOwner = DataHelper.getSurname();
+        var creditgate = new CreditGate();
+        creditgate.cleanField();
+        creditgate.fillingCredForm(validCardNumber, validMonth, validYear, surnameOwner, validcvccvv);
+    }
     @Test  //Поле "Владелец" заполнено кириллицей
     void сyrillicName() {
         String сyrillicOwner = DataHelper.getCyrillicName();
