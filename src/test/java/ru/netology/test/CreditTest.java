@@ -102,14 +102,14 @@ public class CreditTest {
     }
     @Test  //Поле "Месяц" заполнено больше 12, но меньше 100:
     void thirteenMonth() {
-        String excessiveMonth = 13;
+        String excessiveMonth = "13";
         var creditgate = new CreditGate();
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, excessiveMonth, validYear, validOwner, validcvccvv);
     }
     @Test  //Поле "Месяц" заполнено 00:
     void zeroMonth() {
-        String zeroMonth = 00;
+        String zeroMonth = "00";
         var creditgate = new CreditGate();
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, zeroMonth, validYear, validOwner, validcvccvv);

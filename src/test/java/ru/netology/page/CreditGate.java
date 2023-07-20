@@ -22,8 +22,8 @@ public class CreditGate {
     private SelenideElement cvcField = $("[placeholder='999']");
     private SelenideElement nextButton = $(withText("Продолжить"));
 
-    private SelenideElement okStatusNotification = $("[notification_status_ok]");
-    private SelenideElement errorStatusNotification = $("[notification_status_error ]");
+    private SelenideElement okStatusNotification = $(".notification_status_ok");
+    private SelenideElement errorStatusNotification = $(".notification_status_error");
     private SelenideElement validatorFieldMes = $(byText("Поле обязательно для заполнения"));
     private SelenideElement wrongFormatMes = $(byText("Неверный формат"));
     private SelenideElement cardExpireMes = $(byText("Истёк срок действия карты"));

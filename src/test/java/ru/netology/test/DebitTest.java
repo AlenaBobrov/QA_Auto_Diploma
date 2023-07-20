@@ -103,14 +103,14 @@ public class DebitTest {
     }
     @Test  //Поле "Месяц" заполнено больше 12, но меньше 100:
     void thirteenMonth() {
-        String excessiveMonth = 13;
+        String excessiveMonth = "13";
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, excessiveMonth, validYear, validOwner, validcvccvv);
     }
     @Test  //Поле "Месяц" заполнено 00:
     void zeroMonth() {
-        String zeroMonth = 00;
+        String zeroMonth = "00";
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, zeroMonth, validYear, validOwner, validcvccvv);
