@@ -3,6 +3,8 @@ package ru.netology.page;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.Keys;
 
+import java.time.Duration;
+
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
@@ -22,7 +24,7 @@ public class CreditGate {
 
     private SelenideElement okStatusNotification = $("[notification_status_ok]");
     private SelenideElement errorStatusNotification = $("[notification_status_error ]");
-    private SelenideElement validatorFieldMessage = $(byText("Поле обязательно для заполнения"));
+    private SelenideElement validatorFieldMes = $(byText("Поле обязательно для заполнения"));
     private SelenideElement wrongFormatMes = $(byText("Неверный формат"));
     private SelenideElement cardExpireMes = $(byText("Истёк срок действия карты"));
     private SelenideElement wrongExpirationMes = $(byText("Неверно указан срок действия карты"));
@@ -49,5 +51,33 @@ public class CreditGate {
         yearField.doubleClick().sendKeys(Keys.BACK_SPACE);
         ownerField.doubleClick().sendKeys(Keys.BACK_SPACE);
         cvcField.doubleClick().sendKeys(Keys.BACK_SPACE);
+    }
+    //видимость сообщений - успешно или нет
+    public void notificationSuccessIsVisible() {
+        okStatusNotification.shouldBe( visible, Duration.ofSeconds(20) );
+    }
+
+    public void notificationErrorIsVisible() {
+        errorStatusNotification.shouldBe( visible, Duration.ofSeconds( 15 ) );
+    }
+
+    //Поле обязательно для заполнения
+    public void validationMessage() {
+        validatorFieldMes.shouldBe(visible);
+    }
+
+    //Неверный формат
+    public void wrongFormatMessage() {
+        wrongFormatMes.shouldBe(visible);
+    }
+
+    //Истёк срок действия карты
+    public void cardExpiredMessage() {
+        cardExpireMes.shouldBe(visible);
+    }
+
+    // Неверно указан срок действия карты
+    public void wrongCardExpirationMessage() {
+        wrongExpirationMes.shouldBe(visible);
     }
 }
