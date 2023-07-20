@@ -1,6 +1,7 @@
 package ru.netology.page;
 
 import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.Keys;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
@@ -40,5 +41,13 @@ public class CreditGate {
         ownerField.setValue(owner);
         cvcField.setValue(cvccvv);
         nextButton.click();
+    }
+    //очистить поля
+    public void cleanField() {
+        numberCardField.doubleClick().sendKeys(Keys.BACK_SPACE);
+        monthField.doubleClick().sendKeys(Keys.BACK_SPACE);
+        yearField.doubleClick().sendKeys(Keys.BACK_SPACE);
+        ownerField.doubleClick().sendKeys(Keys.BACK_SPACE);
+        cvcField.doubleClick().sendKeys(Keys.BACK_SPACE);
     }
 }
