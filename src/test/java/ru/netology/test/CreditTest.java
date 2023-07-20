@@ -16,6 +16,7 @@ public class CreditTest {
     String validOwner = DataHelper.getValidName();
     String validcvccvv = DataHelper.getValidCVCCVV();
 
+    String declainedCardNumber = DataHelper.getDeclinedCard().getCardNumber();
 
 
     @BeforeEach
@@ -29,6 +30,13 @@ public class CreditTest {
         creditgate.fillingCredForm(validCardNumber, validMonth, validYear, validOwner, validcvccvv);
 
 }
+    @Test // отклоненная карта
+    void declinedCard() {
+        var creditgate = new CreditGate();
+        creditgate.cleanField();
+        creditgate.fillingCredForm(declainedCardNumber, validMonth, validYear, validOwner, validcvccvv);
+        creditgate.notificationErrorIsVisible();
+    }
     @Test  //Поле "Номер карты" заполнено буквами
     void lettersCardNumber() {
         String lettersNumber = DataHelper.getValidName();

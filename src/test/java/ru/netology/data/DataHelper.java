@@ -28,15 +28,7 @@ public class DataHelper {
         return new InfoCard("4444 4444 4444 4442", "DECLINED");
     }
 
-    public static InfoCard getInvalidCard(String number) {
 
-        return new InfoCard(number, "");
-    }
-
-    public static InfoCard getEmptyCardNumber() {
-
-        return new InfoCard("", "");
-    }
 
     public static InfoCard getRandomCardNumber() {
 

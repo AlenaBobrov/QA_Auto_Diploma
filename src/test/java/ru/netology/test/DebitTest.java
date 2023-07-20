@@ -14,6 +14,7 @@ public class DebitTest {
     String validYear = DataHelper.getYear(1);
     String validOwner = DataHelper.getValidName();
     String validcvccvv = DataHelper.getValidCVCCVV();
+    String declainedCardNumber = DataHelper.getDeclinedCard().getCardNumber();
 
     String formatError = "Неверный формат";
     String wrongExpirationDateError = "Неверно указан срок действия карты";
@@ -29,6 +30,13 @@ public class DebitTest {
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, validMonth, validYear, validOwner, validcvccvv);
+    }
+    @Test // отклоненная карта
+    void declinedCard() {
+        var paymentgate = new PaymentGate();
+        paymentgate.cleanPayField();
+        paymentgate.fillingPayForm(declainedCardNumber, validMonth, validYear, validOwner, validcvccvv);
+        paymentgate.notificationErrorIsVisible();
     }
     @Test  //Поле "Номер карты" заполнено буквами
     void lettersCardNumber() {
