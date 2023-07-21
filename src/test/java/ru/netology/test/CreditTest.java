@@ -1,13 +1,16 @@
 package ru.netology.test;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.data.DataHelper;
+import ru.netology.data.SQLHelper;
 import ru.netology.page.CreditGate;
 
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CreditTest {
     String validCardNumber = DataHelper.getApprovedCard().getCardNumber();
@@ -23,6 +26,11 @@ public class CreditTest {
     void setup() {
         open("http://localhost:8080");}
 
+    @AfterAll
+    static void cleanBase() {
+        SQLHelper.cleanBase();
+    }
+
     @Test
     void happyPath() {
         var creditgate = new CreditGate();
@@ -36,6 +44,7 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(declainedCardNumber, validMonth, validYear, validOwner, validcvccvv);
         creditgate.notificationErrorIsVisible();
+        assertEquals("DECLINED", SQLHelper.getCreditStatus())
     }
     @Test  //Поле "Номер карты" заполнено буквами
     void lettersCardNumber() {

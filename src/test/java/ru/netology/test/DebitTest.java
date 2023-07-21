@@ -1,12 +1,15 @@
 package ru.netology.test;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.data.DataHelper;
+import ru.netology.data.SQLHelper;
 import ru.netology.page.CreditGate;
 import ru.netology.page.PaymentGate;
 
 import static com.codeborne.selenide.Selenide.open;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DebitTest {
     String validCardNumber = DataHelper.getApprovedCard().getCardNumber();
@@ -25,6 +28,11 @@ public class DebitTest {
     void setup() {
         open("http://localhost:8080");}
 
+    @AfterAll
+    static void cleanBase() {
+        SQLHelper.cleanBase();
+    }
+
     @Test
     void happyPath() {
         var paymentgate = new PaymentGate();
@@ -37,6 +45,7 @@ public class DebitTest {
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(declainedCardNumber, validMonth, validYear, validOwner, validcvccvv);
         paymentgate.notificationErrorIsVisible();
+        assertEquals("DECLINED", SQLHelper.getPaymentStatus())
     }
     @Test  //Поле "Номер карты" заполнено буквами
     void lettersCardNumber() {
