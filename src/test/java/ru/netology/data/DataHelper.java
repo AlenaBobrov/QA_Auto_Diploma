@@ -22,20 +22,14 @@ public class DataHelper {
 
         return new InfoCard("4444 4444 4444 4441", "APPROVED");
     }
-
     public static InfoCard getDeclinedCard() {
 
         return new InfoCard("4444 4444 4444 4442", "DECLINED");
     }
-
-
-
     public static InfoCard getRandomCardNumber() {
 
         return new InfoCard(faker.business().creditCardNumber(), "");
     }
-
-
     public static String getEmptyFieldValue() {
         return "";
     }
@@ -43,11 +37,6 @@ public class DataHelper {
 
     public static String getValidMonth() {
         return LocalDate.now().format(DateTimeFormatter.ofPattern("MM"));
-    }
-
-    public static String getInvalidMonth(String month) {
-
-        return month;
     }
 
 
@@ -62,8 +51,6 @@ public class DataHelper {
     public static String getLastYear() {
         return LocalDate.now().minusYears(1).format(DateTimeFormatter.ofPattern("yy"));
     }
-
-
     public static String getValidName() {
         return faker.name().fullName();
     }
@@ -100,8 +87,6 @@ public class DataHelper {
             char c  = symbols.charAt(r.nextInt(symbols.length()));
             return String.valueOf(c);
         }
-
-
     public static String getValidCVCCVV() {
 
         return faker.number().digits(3);
