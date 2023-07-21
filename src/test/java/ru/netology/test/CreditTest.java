@@ -20,6 +20,7 @@ public class CreditTest {
     String validcvccvv = DataHelper.getValidCVCCVV();
 
     String declainedCardNumber = DataHelper.getDeclinedCard().getCardNumber();
+    String randomCardNumber = DataHelper.getRandomCardNumber().getCardNumber();
 
 
     @BeforeEach
@@ -36,7 +37,8 @@ public class CreditTest {
         var creditgate = new CreditGate();
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, validMonth, validYear, validOwner, validcvccvv);
-
+        creditgate.notificationSuccessIsVisible();
+        assertEquals("APPROVED", SQLHelper.getCreditStatus())
 }
     @Test // отклоненная карта
     void declinedCard() {
@@ -46,12 +48,22 @@ public class CreditTest {
         creditgate.notificationErrorIsVisible();
         assertEquals("DECLINED", SQLHelper.getCreditStatus())
     }
+    @Test //рандомная карта
+    void randomCard() {
+        var creditgate = new CreditGate();
+        creditgate.cleanField();
+        creditgate.fillingCredForm(randomCardNumber, validMonth, validYear, validOwner, validcvccvv);
+        creditgate.notificationErrorIsVisible();
+        assertEquals(null, SQLHelper.getCreditStatus())
+    }
     @Test  //Поле "Номер карты" заполнено буквами
     void lettersCardNumber() {
         String lettersNumber = DataHelper.getValidName();
         var creditgate = new CreditGate();
         creditgate.cleanField();
         creditgate.fillingCredForm(lettersNumber, validMonth, validYear, validOwner, validcvccvv);
+        creditgate.wrongFormatMessage();
+        assertEquals(null, SQLHelper.getCreditStatus())
     }
     @Test  //Поле "Номер карты" заполнено спецсимволами:
     void symbolsCardNumber() {
@@ -59,6 +71,8 @@ public class CreditTest {
         var creditgate = new CreditGate();
         creditgate.cleanField();
         creditgate.fillingCredForm(symbolsNumber, validMonth, validYear, validOwner, validcvccvv);
+        creditgate.wrongFormatMessage();
+        assertEquals(null, SQLHelper.getCreditStatus())
     }
     @Test  //Поле "Номер карты" заполнено не полностью:
     void notCompletelyCardNumber() {
@@ -66,6 +80,8 @@ public class CreditTest {
         var creditgate = new CreditGate();
         creditgate.cleanField();
         creditgate.fillingCredForm(notCompletelyNumber, validMonth, validYear, validOwner, validcvccvv);
+        creditgate.wrongFormatMessage();
+        assertEquals(null, SQLHelper.getCreditStatus())
     }
     @Test  //Поле "Номер карты" заполнено излишне:
     void excessiveCardNumber() {
@@ -80,6 +96,8 @@ public class CreditTest {
         var creditgate = new CreditGate();
         creditgate.cleanField();
         creditgate.fillingCredForm(emptyCardNumber, validMonth, validYear, validOwner, validcvccvv);
+        creditgate.wrongFormatMessage();
+        assertEquals(null, SQLHelper.getCreditStatus())
     }
     @Test  //Поле "Месяц" заполнено буквами
     void lettersMonth() {
@@ -87,6 +105,8 @@ public class CreditTest {
         var creditgate = new CreditGate();
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, lettersMonth, validYear, validOwner, validcvccvv);
+        creditgate.wrongFormatMessage();
+        assertEquals(null, SQLHelper.getCreditStatus())
     }
     @Test  //Поле "Месяц" заполнено спецсимволами:
     void symbolsMonth() {

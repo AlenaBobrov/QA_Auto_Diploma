@@ -62,8 +62,7 @@ public class CreditGate {
     }
 
     //Поле обязательно для заполнения
-    public void validationMessage() {
-        validatorFieldMes.shouldBe(visible);
+    public void validationMessage() { validatorFieldMes.shouldBe(visible);
     }
 
     //Неверный формат

@@ -53,10 +53,10 @@ public class PaymentGate {
     }
     //видимость сообщений - успешно или нет
     public void notificationSuccessIsVisible() {
-        okStatusNotification.shouldBe( visible, Duration.ofSeconds(20) );
+        okStatusNotification.shouldBe( visible, Duration.ofSeconds(15) );
     }
     public void notificationErrorIsVisible() {
-        errorStatusNotification.shouldBe( visible, Duration.ofSeconds( 20 ) );
+        errorStatusNotification.shouldBe( visible, Duration.ofSeconds(15) );
     }
     //Поле обязательно для заполнения
     public void validationMessage() {

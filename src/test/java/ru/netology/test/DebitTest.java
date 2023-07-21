@@ -38,6 +38,8 @@ public class DebitTest {
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, validMonth, validYear, validOwner, validcvccvv);
+        paymentgate.notificationSuccessIsVisible();
+        assertEquals("APPROVED", SQLHelper.getPaymentStatus())
     }
     @Test // отклоненная карта
     void declinedCard() {
