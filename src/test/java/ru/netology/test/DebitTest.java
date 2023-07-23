@@ -297,10 +297,10 @@ public class DebitTest {
     @Test
     @DisplayName("Отправка заявки, в которой поле Владелец заполнено излишне")
     void excessiveOwner() {
-        String excessiveOwner = "ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd";
+        String excessiveOwner = "ddddddddddddddddddddddddddddd ddddddddddddddddddddddddddddddddddd";
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
-        paymentgate.fillingPayForm(validCardNumber, validMonth, excessiveOwner, validOwner, validcvccvv);
+        paymentgate.fillingPayForm(validCardNumber, validMonth, validYear, excessiveOwner, validcvccvv);
         paymentgate.notificationSuccessIsVisible();
         assertEquals("APPROVED", SQLHelper.getCreditStatus());
     }

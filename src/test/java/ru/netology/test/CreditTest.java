@@ -127,7 +127,7 @@ public class CreditTest {
         creditgate.wrongFormatMessage();
         assertEquals(null, SQLHelper.getCreditStatus());
     }
-    @Test  //Поле "Месяц" заполнено спецсимволами:
+    @Test
     @DisplayName("Отправка заявки, в которой поле Месяц заполнено спецсимволами")
     void symbolsMonth() {
         String symbolsMonth = DataHelper.getSymbols();
@@ -300,10 +300,10 @@ public class CreditTest {
     @Test
     @DisplayName("Отправка заявки, в которой поле Владелец заполнено излишне")
     void excessiveOwner() {
-        String excessiveOwner = "ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd";
+        String excessiveOwner = "ddddddddddddddddddddddddddddd ddddddddddddddddddddddddddddddddddd";
         var creditgate = new CreditGate();
         creditgate.cleanField();
-        creditgate.fillingCredForm(validCardNumber, validMonth, excessiveOwner, validOwner, validcvccvv);
+        creditgate.fillingCredForm(validCardNumber, validMonth, validYear, excessiveOwner, validcvccvv);
         creditgate.notificationSuccessIsVisible();
         assertEquals("APPROVED", SQLHelper.getCreditStatus());
     }
