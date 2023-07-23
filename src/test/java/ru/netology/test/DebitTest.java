@@ -20,10 +20,6 @@ public class DebitTest {
     String declainedCardNumber = DataHelper.getDeclinedCard().getCardNumber();
     String randomCardNumber = DataHelper.getRandomCardNumber().getCardNumber();
 
-    String formatError = "Неверный формат";
-    String wrongExpirationDateError = "Неверно указан срок действия карты";
-    String cardExpiredError = "Истёк срок действия карты";
-    String emptyFieldError = "Поле обязательно для заполнения";
     @BeforeAll
     static void setUpAll() {
         SelenideLogger.addListener("allure", new AllureSelenide());
@@ -151,7 +147,7 @@ public class DebitTest {
     @Test
     @DisplayName("Отправка заявки, в которой поле Месяц заполнено излишне")
     void excessiveMonth() {
-        String excessiveMonth = "120");
+        String excessiveMonth = "120";
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, excessiveMonth, validYear, validOwner, validcvccvv);
