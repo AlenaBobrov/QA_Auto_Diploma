@@ -52,7 +52,7 @@ public class CreditGate {
         ownerField.doubleClick().sendKeys(Keys.BACK_SPACE);
         cvcField.doubleClick().sendKeys(Keys.BACK_SPACE);
     }
-    //видимость сообщений - успешно или нет
+
     public void notificationSuccessIsVisible() {
         okStatusNotification.shouldBe( visible, Duration.ofSeconds(20) );
     }
@@ -61,21 +61,16 @@ public class CreditGate {
         errorStatusNotification.shouldBe( visible, Duration.ofSeconds( 15 ) );
     }
 
-    //Поле обязательно для заполнения
     public void validationMessage() { validatorFieldMes.shouldBe(visible);
     }
-
-    //Неверный формат
     public void wrongFormatMessage() {
         wrongFormatMes.shouldBe(visible);
     }
 
-    //Истёк срок действия карты
     public void cardExpiredMessage() {
         cardExpireMes.shouldBe(visible);
     }
 
-    // Неверно указан срок действия карты
     public void wrongCardExpirationMessage() {
         wrongExpirationMes.shouldBe(visible);
     }

@@ -27,6 +27,7 @@ public class DataHelper {
         return new InfoCard("4444 4444 4444 4442", "DECLINED");
     }
     public static InfoCard getRandomCardNumber() {
+
         return new InfoCard(faker.business().creditCardNumber(), "");
     }
     public static String getEmptyFieldValue() {
@@ -68,10 +69,6 @@ public class DataHelper {
     public static String getOneNumber() {
 
         return faker.number().digits(1);
-    }
-    public static String getThreeNumber() {
-
-        return faker.number().digits(3);
     }
     public static String getFourNumber() {
 

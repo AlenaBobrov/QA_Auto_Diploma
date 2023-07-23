@@ -1,9 +1,8 @@
 package ru.netology.test;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.*;
 import ru.netology.data.DataHelper;
 import ru.netology.data.SQLHelper;
 import ru.netology.page.CreditGate;
@@ -25,7 +24,14 @@ public class DebitTest {
     String wrongExpirationDateError = "Неверно указан срок действия карты";
     String cardExpiredError = "Истёк срок действия карты";
     String emptyFieldError = "Поле обязательно для заполнения";
-
+    @BeforeAll
+    static void setUpAll() {
+        SelenideLogger.addListener("allure", new AllureSelenide());
+    }
+    @AfterAll
+    static void tearDownAll() {
+        SelenideLogger.removeListener("allure");
+    }
     @BeforeEach
     void setup() {
         open("http://localhost:8080");}
@@ -233,6 +239,16 @@ public class DebitTest {
         assertEquals(null, SQLHelper.getCreditStatus());
     }
     @Test
+    @DisplayName("Отправка заявки, в которой поле Год заполнено излишне")
+    void excessiveYear() {
+        String excessiveYear = "250";
+        var paymentgate = new PaymentGate();
+        paymentgate.cleanPayField();
+        paymentgate.fillingPayForm(validCardNumber, validMonth, excessiveYear, validOwner, validcvccvv);
+        paymentgate.notificationSuccessIsVisible();
+        assertEquals("APPROVED", SQLHelper.getCreditStatus());
+    }
+    @Test
     @DisplayName("Отправка заявки, в которой поле Год не заполнено")
     void emptyYear() {
         String emptyYear = DataHelper.getEmptyFieldValue();
@@ -281,6 +297,16 @@ public class DebitTest {
         paymentgate.fillingPayForm(validCardNumber, validMonth, validYear, numberOwner, validcvccvv);
         paymentgate.wrongFormatMessage();
         assertEquals(null, SQLHelper.getCreditStatus());
+    }
+    @Test
+    @DisplayName("Отправка заявки, в которой поле Владелец заполнено излишне")
+    void excessiveOwner() {
+        String excessiveOwner = "ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd";
+        var paymentgate = new PaymentGate();
+        paymentgate.cleanPayField();
+        paymentgate.fillingPayForm(validCardNumber, validMonth, excessiveOwner, validOwner, validcvccvv);
+        paymentgate.notificationSuccessIsVisible();
+        assertEquals("APPROVED", SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле Владелец не заполнено")
