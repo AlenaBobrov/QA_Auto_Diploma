@@ -114,7 +114,7 @@ public class CreditTest {
         var creditgate = new CreditGate();
         creditgate.cleanField();
         creditgate.fillingCredForm(emptyCardNumber, validMonth, validYear, validOwner, validcvccvv);
-        creditgate.wrongFormatMessage();
+        creditgate.validationMessage();
         assertEquals(null, SQLHelper.getCreditStatus());
     }
     @Test
@@ -184,7 +184,7 @@ public class CreditTest {
         var creditgate = new CreditGate();
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, emptyMonth, validYear, validOwner, validcvccvv);
-        creditgate.wrongFormatMessage();
+        creditgate.validationMessage();
         assertEquals(null, SQLHelper.getCreditStatus());
     }
     @Test
@@ -254,7 +254,7 @@ public class CreditTest {
         var creditgate = new CreditGate();
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, validMonth, emptyYear, validOwner, validcvccvv);
-        creditgate.wrongFormatMessage();
+        creditgate.validationMessage();
         assertEquals(null, SQLHelper.getCreditStatus());
     }
     @Test
@@ -364,7 +364,7 @@ public class CreditTest {
         var creditgate = new CreditGate();
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, validMonth, validYear, validOwner, emptyCvcCvv);
-        creditgate.wrongFormatMessage();
+        creditgate.validationMessage();
         assertEquals(null, SQLHelper.getCreditStatus());
     }
 }

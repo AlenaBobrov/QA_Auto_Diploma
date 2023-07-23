@@ -111,7 +111,7 @@ public class DebitTest {
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(emptyCardNumber, validMonth, validYear, validOwner, validcvccvv);
-        paymentgate.wrongFormatMessage();
+        paymentgate.validationMessage();
         assertEquals(null, SQLHelper.getCreditStatus());
     }
     @Test
@@ -181,7 +181,7 @@ public class DebitTest {
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, emptyMonth, validYear, validOwner, validcvccvv);
-        paymentgate.wrongFormatMessage();
+        paymentgate.validationMessage();
         assertEquals(null, SQLHelper.getCreditStatus());
     }
     @Test
@@ -251,7 +251,7 @@ public class DebitTest {
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, validMonth, emptyYear, validOwner, validcvccvv);
-        paymentgate.wrongFormatMessage();
+        paymentgate.validationMessage();
         assertEquals(null, SQLHelper.getCreditStatus());
     }
     @Test
@@ -361,7 +361,7 @@ public class DebitTest {
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, validMonth, validYear, validOwner, emptyCvcCvv);
-        paymentgate.wrongFormatMessage();
+        paymentgate.validationMessage();
         assertEquals(null, SQLHelper.getCreditStatus());
     }
 }
