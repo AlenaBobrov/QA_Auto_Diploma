@@ -2,6 +2,7 @@ package ru.netology.test;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.netology.data.DataHelper;
 import ru.netology.data.SQLHelper;
@@ -18,6 +19,7 @@ public class DebitTest {
     String validOwner = DataHelper.getValidName();
     String validcvccvv = DataHelper.getValidCVCCVV();
     String declainedCardNumber = DataHelper.getDeclinedCard().getCardNumber();
+    String randomCardNumber = DataHelper.getRandomCardNumber().getCardNumber();
 
     String formatError = "Неверный формат";
     String wrongExpirationDateError = "Неверно указан срок действия карты";
@@ -34,215 +36,310 @@ public class DebitTest {
     }
 
     @Test
+    @DisplayName("Отправка заявки с использованием одобренной карты")
     void happyPath() {
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, validMonth, validYear, validOwner, validcvccvv);
         paymentgate.notificationSuccessIsVisible();
-        assertEquals("APPROVED", SQLHelper.getPaymentStatus())
+        assertEquals("APPROVED", SQLHelper.getPaymentStatus());
     }
-    @Test // отклоненная карта
+    @Test
+    @DisplayName("Отправка заявки с использованием не одобренной карты")
     void declinedCard() {
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(declainedCardNumber, validMonth, validYear, validOwner, validcvccvv);
         paymentgate.notificationErrorIsVisible();
-        assertEquals("DECLINED", SQLHelper.getPaymentStatus())
+        assertEquals("DECLINED", SQLHelper.getPaymentStatus());
     }
-    @Test  //Поле "Номер карты" заполнено буквами
+    @Test
+    @DisplayName("Отправка заявки с использованием рандомной карты")
+    void randomCard() {
+        var paymentgate = new PaymentGate();
+        paymentgate.cleanPayField();
+        paymentgate.fillingPayForm(randomCardNumber, validMonth, validYear, validOwner, validcvccvv);
+        paymentgate.notificationErrorIsVisible();
+        assertEquals(null, SQLHelper.getCreditStatus());
+    }
+    @Test
+    @DisplayName("Отправка заявки, в которой поле Номер карты заполнено буквами")
     void lettersCardNumber() {
         String lettersNumber = DataHelper.getValidName();
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(lettersNumber, validMonth, validYear, validOwner, validcvccvv);
+        paymentgate.wrongFormatMessage();
+        assertEquals(null, SQLHelper.getCreditStatus());
     }
-    @Test  //Поле "Номер карты" заполнено спецсимволами:
+    @Test
+    @DisplayName("Отправка заявки, в которой поле Номер карты заполнено спецсимволами")
     void symbolsCardNumber() {
         String symbolsNumber = DataHelper.getSymbols();
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(symbolsNumber, validMonth, validYear, validOwner, validcvccvv);
+        paymentgate.wrongFormatMessage();
+        assertEquals(null, SQLHelper.getCreditStatus());
     }
-    @Test  //Поле "Номер карты" заполнено не полностью:
+    @Test
+    @DisplayName("Отправка заявки, в которой поле Номер карты заполнено не полностью")
     void notCompletelyCardNumber() {
         String notCompletelyNumber = DataHelper.getFifteenNumbers();
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(notCompletelyNumber, validMonth, validYear, validOwner, validcvccvv);
+        paymentgate.wrongFormatMessage();
+        assertEquals(null, SQLHelper.getCreditStatus());
     }
-    @Test  //Поле "Номер карты" заполнено излишне:
+    @Test
+    @DisplayName("Отправка заявки, в которой поле Номер карты заполнено излишне")
     void excessiveCardNumber() {
-        String excessiveNumber = DataHelper.getSeventeenNumbers();
+        String excessiveNumber = "4444 4444 4444 44411";
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(excessiveNumber, validMonth, validYear, validOwner, validcvccvv);
+        paymentgate.notificationSuccessIsVisible();
+        assertEquals("APPROVED", SQLHelper.getPaymentStatus());
     }
-    @Test  //Поле "Номер карты" не заполнено
+    @Test
+    @DisplayName("Отправка заявки, в которой поле Номер карты не заполнено")
     void emptyCardNumber() {
         String emptyCardNumber = DataHelper.getEmptyFieldValue();
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(emptyCardNumber, validMonth, validYear, validOwner, validcvccvv);
+        paymentgate.wrongFormatMessage();
+        assertEquals(null, SQLHelper.getCreditStatus());
     }
-    @Test  //Поле "Месяц" заполнено буквами
+    @Test
+    @DisplayName("Отправка заявки, в которой поле Месяц заполнено буквами")
     void lettersMonth() {
         String lettersMonth = DataHelper.getValidName();
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, lettersMonth, validYear, validOwner, validcvccvv);
+        paymentgate.wrongFormatMessage();
+        assertEquals(null, SQLHelper.getCreditStatus());
     }
-    @Test  //Поле "Месяц" заполнено спецсимволами:
+    @Test
+    @DisplayName("Отправка заявки, в которой поле Месяц заполнено спецсимволами")
     void symbolsMonth() {
         String symbolsMonth = DataHelper.getSymbols();
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, symbolsMonth, validYear, validOwner, validcvccvv);
+        paymentgate.wrongFormatMessage();
+        assertEquals(null, SQLHelper.getCreditStatus());
     }
-    @Test  //Поле "Месяц" заполнен не полностью:
+    @Test
+    @DisplayName("Отправка заявки, в которой поле Месяц заполнено не полностью")
     void notCompletelyMonth() {
         String notCompletelyMonth = DataHelper.getOneNumber();
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, notCompletelyMonth, validYear, validOwner, validcvccvv);
+        paymentgate.wrongFormatMessage();
+        assertEquals(null, SQLHelper.getCreditStatus());
     }
-    @Test  //Поле "Месяц" заполнено излишне:
+    @Test
+    @DisplayName("Отправка заявки, в которой поле Месяц заполнено излишне")
     void excessiveMonth() {
-        String excessiveMonth = DataHelper.getThreeNumber();
+        String excessiveMonth = "120");
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, excessiveMonth, validYear, validOwner, validcvccvv);
+        paymentgate.notificationSuccessIsVisible();
+        assertEquals("APPROVED", SQLHelper.getPaymentStatus());
     }
-    @Test  //Поле "Месяц" заполнено больше 12, но меньше 100:
+    @Test
+    @DisplayName("Отправка заявки, в которой поле Месяц заполнено заполнено больше 12, но меньше 100")
     void thirteenMonth() {
         String excessiveMonth = "13";
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, excessiveMonth, validYear, validOwner, validcvccvv);
+        paymentgate.wrongCardExpirationMessage();
+        assertEquals(null, SQLHelper.getCreditStatus());
     }
-    @Test  //Поле "Месяц" заполнено 00:
+    @Test
+    @DisplayName("Отправка заявки, в которой поле Месяц заполнено заполнено 00")
     void zeroMonth() {
         String zeroMonth = "00";
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, zeroMonth, validYear, validOwner, validcvccvv);
+        paymentgate.wrongCardExpirationMessage();
+        assertEquals(null, SQLHelper.getCreditStatus());
     }
-    @Test  //Поле "Месяц" не заполнено
+    @Test
+    @DisplayName("Отправка заявки, в которой поле Месяц не заполнено")
     void emptyMonth() {
         String emptyMonth = DataHelper.getEmptyFieldValue();
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, emptyMonth, validYear, validOwner, validcvccvv);
+        paymentgate.wrongFormatMessage();
+        assertEquals(null, SQLHelper.getCreditStatus());
     }
-    @Test  //Поле "Год" заполнено буквами
+    @Test
+    @DisplayName("Отправка заявки, в которой поле Год заполнено буквами")
     void lettersYear() {
         String lettersYear = DataHelper.getValidName();
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, validMonth, lettersYear, validOwner, validcvccvv);
+        paymentgate.wrongFormatMessage();
+        assertEquals(null, SQLHelper.getCreditStatus());
     }
-    @Test  //Поле "Год" заполнено спецсимволами:
+    @Test
+    @DisplayName("Отправка заявки, в которой поле Год заполнено спецсимволами")
     void symbolsYear() {
         String symbolsYear = DataHelper.getSymbols();
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, validMonth, symbolsYear, validOwner, validcvccvv);
+        paymentgate.wrongFormatMessage();
+        assertEquals(null, SQLHelper.getCreditStatus());
     }
-    @Test  //Поле "Год" заполнено значением в прошлом:
+    @Test
+    @DisplayName("Отправка заявки, в которой поле Год заполнено значением в прошлом")
     void lastYear() {
         String lastYear = DataHelper.getLastYear();
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, validMonth, lastYear, validOwner, validcvccvv);
+        paymentgate.cardExpiredMessage();
+        assertEquals(null, SQLHelper.getCreditStatus());
     }
-    @Test  //Поле "Год" заполнено более 5 лет в будущем:
+    @Test
+    @DisplayName("Отправка заявки, в которой поле Год заполнено более 5 лет в будущем")
     void overFiveYear() {
         String overFiveYear = DataHelper.getOverFiveYear();
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, validMonth, overFiveYear, validOwner, validcvccvv);
+        paymentgate.wrongCardExpirationMessage();
+        assertEquals(null, SQLHelper.getCreditStatus());
     }
-    @Test  //Поле "Год" заполнено не полностью:
+    @Test
+    @DisplayName("Отправка заявки, в которой поле Год заполнено не полностью")
     void notCompletelyYear() {
         String notCompletelyYear = DataHelper.getOneNumber();
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, validMonth, notCompletelyYear, validOwner, validcvccvv);
+        paymentgate.wrongFormatMessage();
+        assertEquals(null, SQLHelper.getCreditStatus());
     }
-    @Test  //Поле "Год" не заполнено
+    @Test
+    @DisplayName("Отправка заявки, в которой поле Год не заполнено")
     void emptyYear() {
         String emptyYear = DataHelper.getEmptyFieldValue();
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, validMonth, emptyYear, validOwner, validcvccvv);
+        paymentgate.wrongFormatMessage();
+        assertEquals(null, SQLHelper.getCreditStatus());
     }
-    @Test  //Поле "Владелец" заполнено только фамилией
+    @Test
+    @DisplayName("Отправка заявки, в которой поле Владелец заполнено только фамилией")
     void surnameName() {
         String surnameOwner = DataHelper.getSurname();
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, validMonth, validYear, surnameOwner, validcvccvv);
+        paymentgate.wrongFormatMessage();
+        assertEquals(null, SQLHelper.getCreditStatus());
     }
-    @Test  //Поле "Владелец" заполнено кириллицей
+    @Test
+    @DisplayName("Отправка заявки, в которой поле Владелец заполнено кириллицей")
     void сyrillicName() {
         String сyrillicOwner = DataHelper.getCyrillicName();
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, validMonth, validYear, сyrillicOwner, validcvccvv);
+        paymentgate.wrongFormatMessage();
+        assertEquals(null, SQLHelper.getCreditStatus());
     }
-    @Test //символы вместо имени
+    @Test
+    @DisplayName("Отправка заявки, в которой поле Владелец заполнено спецсимволами")
     void symbolName() {
         String symbolOwner = DataHelper.getSymbols();
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, validMonth, validYear, symbolOwner, validcvccvv);
+        paymentgate.wrongFormatMessage();
+        assertEquals(null, SQLHelper.getCreditStatus());
     }
-    @Test //цифры вместо имени
+    @Test
+    @DisplayName("Отправка заявки, в которой поле Владелец заполнено цифрами")
     void numberName() {
         String numberOwner = DataHelper.getFifteenNumbers();
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, validMonth, validYear, numberOwner, validcvccvv);
+        paymentgate.wrongFormatMessage();
+        assertEquals(null, SQLHelper.getCreditStatus());
     }
-    @Test  //пустое поле вместо имени
+    @Test
+    @DisplayName("Отправка заявки, в которой поле Владелец не заполнено")
     void emptyName() {
         String emptyOwner = DataHelper.getEmptyFieldValue();
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, validMonth, validYear, emptyOwner, validcvccvv);
+        paymentgate.validationMessage();
+        assertEquals(null, SQLHelper.getCreditStatus());
     }
-    @Test  //Поле "CVC/CVV" заполнено буквами
+    @Test
+    @DisplayName("Отправка заявки, в которой поле CVC/CVV заполнено буквами")
     void letterscCvcCvv() {
         String lettersCvcCvv = DataHelper.getValidName();
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, validMonth, validYear, validOwner, lettersCvcCvv);
+        paymentgate.wrongFormatMessage();
+        assertEquals(null, SQLHelper.getCreditStatus());
     }
-    @Test  //Поле "CVC/CVV" заполнено спецсимволами:
+    @Test
+    @DisplayName("Отправка заявки, в которой поле CVC/CVV заполнено спецсимволами")
     void symbolsCvcCvv() {
         String symbolsCvcCvv = DataHelper.getSymbols();
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, validMonth, validYear, validOwner, symbolsCvcCvv);
+        paymentgate.wrongFormatMessage();
+        assertEquals(null, SQLHelper.getCreditStatus());
     }
-    @Test  //Поле "CVC/CVV" заполнено не полностью:
+    @Test
+    @DisplayName("Отправка заявки, в которой поле CVC/CVV заполнено не полностью")
     void notCompletelyCvcCvv() {
         String notCompletelyCvcCvv = DataHelper.getOneNumber();
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, validMonth, validYear, validOwner, notCompletelyCvcCvv);
+        paymentgate.wrongFormatMessage();
+        assertEquals(null, SQLHelper.getCreditStatus());
     }
-    @Test  //Поле "CVC/CVV" заполнено излишне:
+    @Test
+    @DisplayName("Отправка заявки, в которой поле CVC/CVV заполнено заполнено излишне")
     void excessiveCvcCvv() {
         String excessiveCvcCvv = DataHelper.getFourNumber();
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, validMonth, validYear, validOwner, excessiveCvcCvv);
+        paymentgate.notificationSuccessIsVisible();
+        assertEquals("APPROVED", SQLHelper.getPaymentStatus());
     }
-    @Test  //Поле "CVC/CVV" не заполнено
+    @Test
+    @DisplayName("Отправка заявки, в которой поле CVC/CVV не заполнено")
     void emptyCvcCvv() {
         String emptyCvcCvv = DataHelper.getEmptyFieldValue();
         var paymentgate = new PaymentGate();
         paymentgate.cleanPayField();
         paymentgate.fillingPayForm(validCardNumber, validMonth, validYear, validOwner, emptyCvcCvv);
+        paymentgate.wrongFormatMessage();
+        assertEquals(null, SQLHelper.getCreditStatus());
     }
 }

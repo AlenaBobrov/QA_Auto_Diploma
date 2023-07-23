@@ -64,10 +64,7 @@ public class DataHelper {
     public static String getFifteenNumbers() {
         return faker.number().digits(15);
     }
-    public static String getSeventeenNumbers() {
 
-        return faker.number().digits(17);
-    }
     public static String getOneNumber() {
 
         return faker.number().digits(1);
