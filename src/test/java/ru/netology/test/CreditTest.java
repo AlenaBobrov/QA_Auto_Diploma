@@ -8,7 +8,7 @@ import ru.netology.data.SQLHelper;
 import ru.netology.page.CreditGate;
 
 import static com.codeborne.selenide.Selenide.open;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CreditTest {
     String validCardNumber = DataHelper.getApprovedCard().getCardNumber();
@@ -16,15 +16,13 @@ public class CreditTest {
     String validYear = DataHelper.getYear(1);
     String validOwner = DataHelper.getValidName();
     String validcvccvv = DataHelper.getValidCVCCVV();
-
-    String declainedCardNumber = DataHelper.getDeclinedCard().getCardNumber();
+    String declinedCardNumber = DataHelper.getDeclinedCard().getCardNumber();
     String randomCardNumber = DataHelper.getRandomCardNumber().getCardNumber();
 
     @BeforeAll
     static void setUpAll() {
         SelenideLogger.addListener("allure", new AllureSelenide());
     }
-
     @AfterAll
     static void tearDownAll() {
         SelenideLogger.removeListener("allure");
@@ -32,7 +30,6 @@ public class CreditTest {
     @BeforeEach
     void setup() {
         open("http://localhost:8080");}
-
     @AfterEach
     void cleanBase() {
         SQLHelper.cleanBase();
@@ -52,7 +49,7 @@ public class CreditTest {
     void declinedCard() {
         var creditgate = new CreditGate();
         creditgate.cleanField();
-        creditgate.fillingCredForm(declainedCardNumber, validMonth, validYear, validOwner, validcvccvv);
+        creditgate.fillingCredForm(declinedCardNumber, validMonth, validYear, validOwner, validcvccvv);
         creditgate.notificationErrorIsVisible();
         assertEquals("DECLINED", SQLHelper.getCreditStatus());
     }
@@ -63,7 +60,7 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(randomCardNumber, validMonth, validYear, validOwner, validcvccvv);
         creditgate.notificationErrorIsVisible();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле Номер карты заполнено буквами")
@@ -73,7 +70,7 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(lettersNumber, validMonth, validYear, validOwner, validcvccvv);
         creditgate.wrongFormatMessage();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле Номер карты заполнено спецсимволами")
@@ -83,7 +80,7 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(symbolsNumber, validMonth, validYear, validOwner, validcvccvv);
         creditgate.wrongFormatMessage();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле Номер карты заполнено не полностью")
@@ -93,7 +90,7 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(notCompletelyNumber, validMonth, validYear, validOwner, validcvccvv);
         creditgate.wrongFormatMessage();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле Номер карты заполнено излишне")
@@ -113,7 +110,7 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(emptyCardNumber, validMonth, validYear, validOwner, validcvccvv);
         creditgate.validationMessage();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле Месяц заполнено буквами")
@@ -123,7 +120,7 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, lettersMonth, validYear, validOwner, validcvccvv);
         creditgate.wrongFormatMessage();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле Месяц заполнено спецсимволами")
@@ -133,7 +130,7 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, symbolsMonth, validYear, validOwner, validcvccvv);
         creditgate.wrongFormatMessage();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле Месяц заполнено не полностью")
@@ -143,7 +140,7 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, notCompletelyMonth, validYear, validOwner, validcvccvv);
         creditgate.wrongFormatMessage();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле Месяц заполнено излишне")
@@ -163,7 +160,7 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, excessiveMonth, validYear, validOwner, validcvccvv);
         creditgate.wrongCardExpirationMessage();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле Месяц заполнено заполнено 00")
@@ -173,7 +170,7 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, zeroMonth, validYear, validOwner, validcvccvv);
         creditgate.wrongCardExpirationMessage();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле Месяц не заполнено")
@@ -183,7 +180,7 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, emptyMonth, validYear, validOwner, validcvccvv);
         creditgate.validationMessage();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле Год заполнено буквами")
@@ -193,7 +190,7 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, validMonth, lettersYear, validOwner, validcvccvv);
         creditgate.wrongFormatMessage();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле Год заполнено спецсимволами")
@@ -203,7 +200,7 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, validMonth, symbolsYear, validOwner, validcvccvv);
         creditgate.wrongFormatMessage();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле Год заполнено значением в прошлом")
@@ -213,7 +210,7 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, validMonth, lastYear, validOwner, validcvccvv);
         creditgate.cardExpiredMessage();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле Год заполнено более 5 лет в будущем")
@@ -223,7 +220,7 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, validMonth, overFiveYear, validOwner, validcvccvv);
         creditgate.wrongCardExpirationMessage();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле Год заполнено не полностью")
@@ -233,7 +230,7 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, validMonth, notCompletelyYear, validOwner, validcvccvv);
         creditgate.wrongFormatMessage();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле Год заполнено излишне")
@@ -253,7 +250,7 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, validMonth, emptyYear, validOwner, validcvccvv);
         creditgate.validationMessage();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле Владелец заполнено только фамилией")
@@ -263,17 +260,17 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, validMonth, validYear, surnameOwner, validcvccvv);
         creditgate.wrongFormatMessage();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле Владелец заполнено кириллицей")
-    void сyrillicName() {
-        String сyrillicOwner = DataHelper.getCyrillicName();
+    void cyrillicName() {
+        String cyrillicOwner = DataHelper.getCyrillicName();
         var creditgate = new CreditGate();
         creditgate.cleanField();
-        creditgate.fillingCredForm(validCardNumber, validMonth, validYear, сyrillicOwner, validcvccvv);
+        creditgate.fillingCredForm(validCardNumber, validMonth, validYear, cyrillicOwner, validcvccvv);
         creditgate.wrongFormatMessage();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле Владелец заполнено спецсимволами")
@@ -283,7 +280,7 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, validMonth, validYear, symbolOwner, validcvccvv);
         creditgate.wrongFormatMessage();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле Владелец заполнено цифрами")
@@ -293,7 +290,7 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, validMonth, validYear, numberOwner, validcvccvv);
         creditgate.wrongFormatMessage();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле Владелец заполнено излишне")
@@ -313,17 +310,17 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, validMonth, validYear, emptyOwner, validcvccvv);
         creditgate.validationMessage();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле CVC/CVV заполнено буквами")
-    void letterscCvcCvv() {
+    void lettersCvcCvv() {
         String lettersCvcCvv = DataHelper.getValidName();
         var creditgate = new CreditGate();
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, validMonth, validYear, validOwner, lettersCvcCvv);
         creditgate.wrongFormatMessage();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле CVC/CVV заполнено спецсимволами")
@@ -333,7 +330,7 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, validMonth, validYear, validOwner, symbolsCvcCvv);
         creditgate.wrongFormatMessage();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле CVC/CVV заполнено не полностью")
@@ -343,7 +340,7 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, validMonth, validYear, validOwner, notCompletelyCvcCvv);
         creditgate.wrongFormatMessage();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
     @Test
     @DisplayName("Отправка заявки, в которой поле CVC/CVV заполнено заполнено излишне")
@@ -363,6 +360,6 @@ public class CreditTest {
         creditgate.cleanField();
         creditgate.fillingCredForm(validCardNumber, validMonth, validYear, validOwner, emptyCvcCvv);
         creditgate.validationMessage();
-        assertEquals(null, SQLHelper.getCreditStatus());
+        assertNull(SQLHelper.getCreditStatus());
     }
 }
