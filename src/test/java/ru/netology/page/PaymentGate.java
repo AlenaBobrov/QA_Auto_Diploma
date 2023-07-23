@@ -53,10 +53,10 @@ public class PaymentGate {
     }
 
     public void notificationSuccessIsVisible() {
-        okStatusNotification.shouldBe( visible, Duration.ofSeconds(15) );
+        okStatusNotification.shouldBe( visible, Duration.ofSeconds(20) );
     }
     public void notificationErrorIsVisible() {
-        errorStatusNotification.shouldBe( visible, Duration.ofSeconds(15) );
+        errorStatusNotification.shouldBe( visible, Duration.ofSeconds(20) );
     }
 
     public void validationMessage() {

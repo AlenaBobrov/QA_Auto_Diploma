@@ -19,7 +19,7 @@ public class SQLHelper {
     @SneakyThrows
     public static String getPaymentStatus() {
         var conn = getConn();
-        var status = "SELECT status FROM payment_entity";
+        var status = "SELECT status FROM payment_entity ORDER BY created DESC LIMIT 1";
         return runner.query(conn, status, new ScalarHandler<>());
 
     }
@@ -27,7 +27,7 @@ public class SQLHelper {
     @SneakyThrows
     public static String getCreditStatus() {
         var conn = getConn();
-        var status = "SELECT status FROM credit_request_entity";
+        var status = "SELECT status FROM credit_request_entity ORDER BY created DESC LIMIT 1";
         return runner.query(conn, status, new ScalarHandler<>());
 
     }
@@ -36,8 +36,8 @@ public class SQLHelper {
     public static void cleanBase() {
         var connection = getConn();
         runner.execute(connection, "DELETE FROM credit_request_entity");
-        runner.execute(connection, "DELETE FROM payment_entity");
         runner.execute(connection, "DELETE FROM order_entity");
+        runner.execute(connection, "DELETE FROM payment_entity");
     }
 }
 

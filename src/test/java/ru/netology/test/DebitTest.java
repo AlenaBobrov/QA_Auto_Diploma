@@ -5,7 +5,6 @@ import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.*;
 import ru.netology.data.DataHelper;
 import ru.netology.data.SQLHelper;
-import ru.netology.page.CreditGate;
 import ru.netology.page.PaymentGate;
 
 import static com.codeborne.selenide.Selenide.open;
@@ -32,8 +31,8 @@ public class DebitTest {
     void setup() {
         open("http://localhost:8080");}
 
-    @AfterAll
-    static void cleanBase() {
+    @AfterEach
+    void cleanBase() {
         SQLHelper.cleanBase();
     }
 

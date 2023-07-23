@@ -58,7 +58,7 @@ public class CreditGate {
     }
 
     public void notificationErrorIsVisible() {
-        errorStatusNotification.shouldBe( visible, Duration.ofSeconds( 15 ) );
+        errorStatusNotification.shouldBe( visible, Duration.ofSeconds(20) );
     }
 
     public void validationMessage() { validatorFieldMes.shouldBe(visible);

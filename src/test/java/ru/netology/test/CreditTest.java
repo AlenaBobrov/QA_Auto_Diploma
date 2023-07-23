@@ -7,8 +7,6 @@ import ru.netology.data.DataHelper;
 import ru.netology.data.SQLHelper;
 import ru.netology.page.CreditGate;
 
-import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -35,8 +33,8 @@ public class CreditTest {
     void setup() {
         open("http://localhost:8080");}
 
-    @AfterAll
-    static void cleanBase() {
+    @AfterEach
+    void cleanBase() {
         SQLHelper.cleanBase();
     }
 
