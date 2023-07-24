@@ -19,6 +19,7 @@
 
 #### При подключении к СУБД MySQL
 
+![Allure Report — MySQL](https://github.com/AlenaBobrov/QA_Auto_Diploma/assets/125354102/88d1dd43-45f7-4d29-ba84-6194b67e15c7)
 
 
 * 24 - успешных, что составляет 72.72%
@@ -26,6 +27,7 @@
 
 #### При подключении к СУБД PostgreSQL
 
+![Allure Report — 2](https://github.com/AlenaBobrov/QA_Auto_Diploma/assets/125354102/77df42b5-f59b-4de0-a44d-61841f064d36)
 
 
 * 24 - успешных, что составляет 72.72%
