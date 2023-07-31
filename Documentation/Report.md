@@ -49,3 +49,6 @@
 7) [Успешная покупка тура по карте, если поле "Владелец" заполнено на кириллице](https://github.com/AlenaBobrov/QA_Auto_Diploma/issues/7)
 8) [Успешная покупка тура по карте, если поле "Владелец" заполнено спецсимволами](https://github.com/AlenaBobrov/QA_Auto_Diploma/issues/8)
 9) [Успешная покупка тура по карте, если поле "Владелец" заполнено цифрами](https://github.com/AlenaBobrov/QA_Auto_Diploma/issues/9)
+10) [Неверный текст сообщения при отправке формы с пустым полем "CVC/CVV"](https://github.com/AlenaBobrov/QA_Auto_Diploma/issues/10)
+11) [При отправке формы с пустым полем "CVC/CVV" появляется сообщение Поле обязательно для заполнения под полем Владелец](https://github.com/AlenaBobrov/QA_Auto_Diploma/issues/11)
+12) [Сообщения об ошибке полей ввода не исчезают после введения корректных данных](https://github.com/AlenaBobrov/QA_Auto_Diploma/issues/12)

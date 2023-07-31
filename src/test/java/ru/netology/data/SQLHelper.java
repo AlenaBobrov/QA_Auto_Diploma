@@ -9,12 +9,16 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class SQLHelper {
-    private static final String url = System.getProperty( "datasource.url" );
+    private static final String url = System.getProperty("datasource.url");
+    private static final String user = System.getProperty("datasource.user");
+    private static final String password = System.getProperty("datasource.password");
     private static QueryRunner runner = new QueryRunner();
+
     private SQLHelper() {
     }
+
     private static Connection getConn() throws SQLException {
-        return DriverManager.getConnection(url, "app", "pass");
+        return DriverManager.getConnection(url, user, password);
     }
 
     @SneakyThrows
@@ -22,7 +26,6 @@ public class SQLHelper {
         var conn = getConn();
         var status = "SELECT status FROM payment_entity ORDER BY created DESC LIMIT 1";
         return runner.query(conn, status, new ScalarHandler<>());
-
     }
 
     @SneakyThrows
@@ -30,7 +33,6 @@ public class SQLHelper {
         var conn = getConn();
         var status = "SELECT status FROM credit_request_entity ORDER BY created DESC LIMIT 1";
         return runner.query(conn, status, new ScalarHandler<>());
-
     }
 
     @SneakyThrows

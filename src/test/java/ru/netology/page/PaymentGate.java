@@ -28,6 +28,7 @@ public class PaymentGate {
     private SelenideElement wrongFormatMes = $(byText("Неверный формат"));
     private SelenideElement cardExpireMes = $(byText("Истёк срок действия карты"));
     private SelenideElement wrongExpirationMes = $(byText("Неверно указан срок действия карты"));
+
     public PaymentGate() {
         buyButton.click();
         heading
@@ -35,7 +36,7 @@ public class PaymentGate {
                 .shouldHave(text("Оплата по карте"));
     }
 
-    public  void fillingPayForm(String card, String month, String year, String owner, String cvccvv) {
+    public void fillingPayForm(String card, String month, String year, String owner, String cvccvv) {
         numberCardField.setValue(card);
         monthField.setValue(month);
         yearField.setValue(year);
@@ -43,7 +44,7 @@ public class PaymentGate {
         cvcField.setValue(cvccvv);
         nextButton.click();
     }
-    //очистить поля
+
     public void cleanPayField() {
         numberCardField.doubleClick().sendKeys(Keys.BACK_SPACE);
         monthField.doubleClick().sendKeys(Keys.BACK_SPACE);
@@ -52,26 +53,31 @@ public class PaymentGate {
         cvcField.doubleClick().sendKeys(Keys.BACK_SPACE);
     }
 
-    public void notificationSuccessIsVisible() {
-        okStatusNotification.shouldBe( visible, Duration.ofSeconds(20) );
-    }
-    public void notificationErrorIsVisible() {
-        errorStatusNotification.shouldBe( visible, Duration.ofSeconds(20) );
+    public void checkNotificationSuccessIsVisible() {
+        okStatusNotification.shouldBe(visible, Duration.ofSeconds(20));
     }
 
-    public void validationMessage() {
+    public void checkNotificationErrorIsVisible() {
+        errorStatusNotification.shouldBe(visible, Duration.ofSeconds(20));
+    }
+
+    public void checkValidationMessage() {
 
         validatorFieldMes.shouldBe(visible);
     }
 
-    public void wrongFormatMessage() {
+    public void checkWrongFormatMessage() {
+
         wrongFormatMes.shouldBe(visible);
     }
-    public void cardExpiredMessage() {
+
+    public void checkCardExpiredMessage() {
+
         cardExpireMes.shouldBe(visible);
     }
 
-    public void wrongCardExpirationMessage() {
+    public void checkWrongCardExpirationMessage() {
+
         wrongExpirationMes.shouldBe(visible);
     }
 }

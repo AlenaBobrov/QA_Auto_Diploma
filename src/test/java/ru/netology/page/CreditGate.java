@@ -35,7 +35,7 @@ public class CreditGate {
                 .shouldHave(text("Кредит по данным карты"));
     }
 
-    public  void fillingCredForm(String card, String month, String year, String owner, String cvccvv) {
+    public void fillingCredForm(String card, String month, String year, String owner, String cvccvv) {
         numberCardField.setValue(card);
         monthField.setValue(month);
         yearField.setValue(year);
@@ -43,7 +43,7 @@ public class CreditGate {
         cvcField.setValue(cvccvv);
         nextButton.click();
     }
-    //очистить поля
+
     public void cleanField() {
         numberCardField.doubleClick().sendKeys(Keys.BACK_SPACE);
         monthField.doubleClick().sendKeys(Keys.BACK_SPACE);
@@ -52,25 +52,30 @@ public class CreditGate {
         cvcField.doubleClick().sendKeys(Keys.BACK_SPACE);
     }
 
-    public void notificationSuccessIsVisible() {
-        okStatusNotification.shouldBe( visible, Duration.ofSeconds(20) );
+    public void checkNotificationSuccessIsVisible() {
+        okStatusNotification.shouldBe(visible, Duration.ofSeconds(20));
     }
 
-    public void notificationErrorIsVisible() {
-        errorStatusNotification.shouldBe( visible, Duration.ofSeconds(20) );
+    public void checkNotificationErrorIsVisible() {
+        errorStatusNotification.shouldBe(visible, Duration.ofSeconds(20));
     }
 
-    public void validationMessage() { validatorFieldMes.shouldBe(visible);
+    public void checkValidationMessage() {
+        validatorFieldMes.shouldBe(visible);
     }
-    public void wrongFormatMessage() {
+
+    public void checkWrongFormatMessage() {
+
         wrongFormatMes.shouldBe(visible);
     }
 
-    public void cardExpiredMessage() {
+    public void checkCardExpiredMessage() {
+
         cardExpireMes.shouldBe(visible);
     }
 
-    public void wrongCardExpirationMessage() {
+    public void checkWrongCardExpirationMessage() {
+
         wrongExpirationMes.shouldBe(visible);
     }
 }
